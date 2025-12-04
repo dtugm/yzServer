@@ -6,21 +6,16 @@
 # CMD ["tileserver-gl-light", "output.mbtiles", "--port", "8080"]
 FROM node:18-alpine
 
-# Install dependencies
-RUN apk add --no-cache aws-cli wget
+RUN apk add --no-cache wget
 
-# Install tileserver-gl-light
 RUN npm install -g tileserver-gl-light
 
-# Set working directory
 WORKDIR /app
 
-# Copy download script
 COPY download-tiles.sh /app/
-RUN chmod +x /app/download-tiles.sh
+COPY start-server.sh /app/
+RUN chmod +x /app/*.sh
 
-# Expose port
 EXPOSE 8080
 
-# Download tiles then start server
-CMD ["/bin/sh", "-c", "/app/download-tiles.sh && tileserver-gl-light *.mbtiles --port 8080"]
+CMD ["/bin/sh", "-c", "/app/download-tiles.sh && /app/start-server.sh"]
