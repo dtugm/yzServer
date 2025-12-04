@@ -4,7 +4,6 @@
 # COPY output.mbtiles /app/
 # EXPOSE 8080
 # CMD ["tileserver-gl-light", "output.mbtiles", "--port", "8080"]
-
 FROM node:18-alpine
 
 # Install dependencies
