@@ -1,21 +1,26 @@
-# FROM node:18-alpine
-# RUN npm install -g tileserver-gl-light
-# WORKDIR /app
-# COPY output.mbtiles /app/
-# EXPOSE 8080
-# CMD ["tileserver-gl-light", "output.mbtiles", "--port", "8080"]
 FROM node:18-alpine
 
-RUN apk add --no-cache wget
+# 1. Install dependencies sistem
+# bash: untuk shell execution yang lebih stabil dibanding sh
+# wget: untuk download
+# libc6-compat: PENTING untuk tileserver (mapbox-gl-native) di Alpine agar tidak crash
+RUN apk add --no-cache wget bash libc6-compat
 
+# 2. Install tileserver
 RUN npm install -g tileserver-gl-light
 
 WORKDIR /app
 
+# 3. Copy scripts
 COPY download-tiles.sh /app/
 COPY start-server.sh /app/
 RUN chmod +x /app/*.sh
 
+# 4. Set Environment Variable
+ENV PORT=8080
+
 EXPOSE 8080
 
-CMD ["/bin/sh", "-c", "/app/download-tiles.sh && /app/start-server.sh"]
+# 5. Jalankan dengan Bash
+# Pastikan script download sukses dulu (&&), baru start server
+CMD ["/bin/bash", "-c", "./download-tiles.sh && ./start-server.sh"]
