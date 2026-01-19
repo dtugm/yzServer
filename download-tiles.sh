@@ -41,7 +41,7 @@ download_file() {
     RETRY_COUNT=0
     
     while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-        wget -q --show-progress -O "/app/${filename}" "$FULL_URL"
+        wget -q -O "/app/${filename}" "$FULL_URL"
         
         if [ $? -eq 0 ]; then
             FILE_SIZE=$(ls -lh "/app/$filename" | awk '{print $5}')
