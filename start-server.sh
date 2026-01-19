@@ -48,4 +48,5 @@ cat /app/config.json
 echo "=========================================="
 
 # Start server
-exec tileserver-gl-light --port 8080 --config /app/config.json
+# exec tileserver-gl-light --port 8080 --config /app/config.json
+exec tileserver-gl --port 8080 --config /app/config.json
